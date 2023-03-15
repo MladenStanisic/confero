@@ -41,4 +41,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'conference_user_role')
+            ->withPivot('conference_id')
+            ->withTimestamps();
+    }
+
+    public function conferences()
+    {
+        return $this->belongsToMany(Conference::class, 'conference_user_role')
+            ->withPivot('role_id')
+            ->withTimestamps();
+    }
+
+    public function roleForConference(Conference $conference)
+    {
+        return $this->roles()
+            ->wherePivot('conference_id', $conference->id)
+            ->first();
+    }
 }
