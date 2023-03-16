@@ -17,8 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->unsignedBigInteger('speaker');
-            $table->foreign('speaker')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('speaker_id');
+            $table->foreign('speaker_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('conference_room_id')->constrained()->onDelete('cascade');
             $table->unique(['start_time', 'conference_room_id']);
             $table->timestamps();

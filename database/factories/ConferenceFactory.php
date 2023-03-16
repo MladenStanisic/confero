@@ -3,7 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Conference;
+use App\Models\ConferenceRoom;
 use App\Models\Role;
+use App\Models\Talk;
+use App\Models\TalkSlide;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,7 +15,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ConferenceFactory extends Factory
 {
-    protected $model = Conference::class;
 
     public function definition()
     {
@@ -30,6 +32,11 @@ class ConferenceFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Conference $conference) {
+
+            // Create roles
+            Role::create(['name' => 'organizer']);
+            Role::create(['name' => 'speaker']);
+            Role::create(['name' => 'attendee']);
             $roles = Role::all();
 
             // Add organizer
@@ -37,14 +44,21 @@ class ConferenceFactory extends Factory
             $conference->users()->attach($organizer->id, ['role_id' => $roles->firstWhere('name', 'organizer')->id]);
 
             // Add speakers
-            $speakerCount = $this->faker->numberBetween(2, 5);
-            $speakers = User::factory($speakerCount)->create();
+            $speakers = User::factory(10)->create();
             $conference->users()->attach($speakers->pluck('id'), ['role_id' => $roles->firstWhere('name', 'speaker')->id]);
 
             // Add attendees
-            $attendeeCount = $this->faker->numberBetween(50, 100);
-            $attendees = User::factory($attendeeCount)->create();
+            $attendees = User::factory(50)->create();
             $conference->users()->attach($attendees->pluck('id'), ['role_id' => $roles->firstWhere('name', 'attendee')->id]);
+
+            // Add conference rooms
+            ConferenceRoom::factory()->count(10)->create();
+
+            // Add conference talks
+            Talk::factory(5)->create();
+
+            // Add slides for talks
+            TalkSlide::factory(3)->create();
         });
     }
 }

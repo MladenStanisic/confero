@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ConferenceRoomFactory extends Factory
 {
-    protected $model = ConferenceRoom::class;
-
     public function definition()
     {
         return [

@@ -14,12 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Role::create(['name' => 'organizer']);
-        Role::create(['name' => 'speaker']);
-        Role::create(['name' => 'attendee']);
         \App\Models\Conference::factory(1)->create();
-        \App\Models\ConferenceRoom::factory()->count(10)->create();
-        \App\Models\Talk::factory(10)->create();
 
     }
 }

@@ -17,6 +17,6 @@ class TalkSlide extends Model
 
     public function speaker(): belongsTo
     {
-        return $this->belongsTo(User::class, 'speaker');
+        return $this->belongsTo(User::class, 'speaker_id');
     }
 }
